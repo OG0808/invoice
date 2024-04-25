@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Sidebar from "@/components/sideBar/Sidebar";
+import { ThemeProvider } from "@/themeProvider/ThemeProvider";
+import { Formulario } from "@/components/form/Form";
 
+import { Toaster } from "sonner";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,7 +20,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        <link
+          href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+          rel="stylesheet"
+        />
+      </head>
+
+  
+      <body
+        suppressHydrationWarning={true}
+        className={`${inter.className} flex items-center`}
+        >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+          >
+          <Sidebar />
+          <Formulario />
+          <Toaster richColors  expand={true}  />
+          {children}
+        </ThemeProvider>
+      </body>
+         
     </html>
   );
 }
