@@ -1,8 +1,7 @@
 "use client";
 
 import useStore from "@/store/useStore";
-import { Spinner } from "@nextui-org/spinner";
-import { Card, CardContent,} from "../ui/card";
+import { Card, CardContent } from "../ui/card";
 import {
   Table,
   TableBody,
@@ -11,82 +10,101 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import {motion} from "framer-motion"
-import {statusInfo} from "@/invoiceStatusUtils/invoiceStatusUtils";
+import { motion } from "framer-motion";
+import { statusInfo } from "@/invoiceStatusUtils/invoiceStatusUtils";
 import { Button } from "../ui/button";
-import {toast} from 'sonner'
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import UpdateInvoice from "../updateInvoice/UpdateInvoice";
 
-const InvoiceCard = ({ params }: {params:string}) => {
+const InvoiceCard = ({ params }: { params: string }) => {
   const markInvoiceAsPaid = useStore((state) => state.markInvoiceAsPaid);
   const invoice = useStore((state) => state.invoices);
   const deleteInvoice = useStore((state) => state.deleteInvoice);
-  const setShowForm = useStore((state) => state.setShowForm);
-  const router = useRouter()
 
-  const handleDeleteInvoice =()=>{
-    deleteInvoice(params)
+  const router = useRouter();
+
+  const handleDeleteInvoice = () => {
+    deleteInvoice(params);
     toast.error(`${filInv.clientName}`, {
-      description:"Invoice has been deleted"
-    })
-    router.push("/invoices")
-  }
+      description: "Invoice has been deleted",
+    });
+    router.push("/invoices");
+  };
   const filInv = invoice.filter((inv) => inv.id === params)[0];
 
   if (!filInv) {
-    return 
+    return;
   }
 
   const { city, country, postCode, street } = filInv?.senderAddress;
-  const { clientName, createdAt, paymentDue, clientEmail,status } = filInv;
+  const { clientName, createdAt, paymentDue, clientEmail, status } = filInv;
   const { clientAddress } = filInv;
   return (
     <>
-   
-   
       <Link href={"/invoices"}>
         <Button className="w-fit flex gap-3">
           <i className="bx bxs-left-arrow"></i> back
         </Button>
       </Link>
-     
+
       <Card>
-        <CardContent className="flex justify-between
-        p-5 items-center">
-          <motion.div initial={{ opacity: 0, scale: 1 }}
-                animate={{ opacity: 1, y: 0, transition: { delay: 1 * 0.2 } }}
-                exit={{ opacity: 0, y: 50 }}
-                transition={{ duration: 0.5 }} className="flex items-center gap-4 dark:bg-gray-900 bg-gray-50 p-5 rounded-lg">
+        <CardContent
+          className="flex justify-between
+        p-5 items-center"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 1 }}
+            animate={{ opacity: 1, y: 0, transition: { delay: 1 * 0.2 } }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.5 }}
+            className="flex items-center gap-4 dark:bg-gray-900 bg-gray-50 p-5 rounded-lg"
+          >
             <span className="text-gray-400 text-sm font-bold">status</span>
             <span className={`${statusInfo(status)} rounded-lg`}>
-          <div></div>
-          {status}
-        </span>
+              <div></div>
+              {status}
+            </span>
           </motion.div>
 
           <motion.div
-                initial={{ opacity: 0, scale: 1 }}
-                animate={{ opacity: 1, y: 0, transition: { delay: 1 * 0.2 } }}
-                exit={{ opacity: 0, y: 50 }}
-                transition={{ duration: 0.5 }} className="flex gap-4 dark:bg-gray-900 bg-gray-50 p-5 rounded-lg">
-                  <Button onClick={setShowForm}  variant={"outline"}>Edit</Button>
-            <Button onClick={handleDeleteInvoice} className="font-bold" variant={"destructive"}>Delete</Button>
-            {
-              filInv.status !== "paid" ?   
-              <Button  className="font-bold text-green-600 bg-green-200 hover:bg-opacity-80" onClick={()=>markInvoiceAsPaid(filInv.id)} >Mark as Paid</Button> :""
-            }
+            initial={{ opacity: 0, scale: 1 }}
+            animate={{ opacity: 1, y: 0, transition: { delay: 1 * 0.2 } }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.5 }}
+            className="flex gap-4 dark:bg-gray-900 bg-gray-50 p-5 rounded-lg"
+          >
+            <UpdateInvoice/>
+            <Button
+              onClick={handleDeleteInvoice}
+              className="font-bold"
+              variant={"destructive"}
+            >
+              Delete
+            </Button>
+            {filInv.status !== "paid" ? (
+              <Button
+                className="font-bold text-green-600 bg-green-200 hover:bg-opacity-80"
+                onClick={() => markInvoiceAsPaid(filInv.id)}
+              >
+                Mark as Paid
+              </Button>
+            ) : (
+              ""
+            )}
           </motion.div>
         </CardContent>
       </Card>
       <Card className="w-full pt-6 ">
         <CardContent className=" flex flex-col gap-4">
-          <motion.section      
-           initial={{ opacity: 0, scale: 1 }}
-           animate={{ opacity: 1, y: 0, transition: { delay: 2 * 0.2 } }}
-           exit={{ opacity: 0, y: 50 }}
-           transition={{ duration: 0.5 }}
-          className="flex justify-between w-full dark:bg-gray-900 bg-gray-50 p-5 rounded-lg">
+          <motion.section
+            initial={{ opacity: 0, scale: 1 }}
+            animate={{ opacity: 1, y: 0, transition: { delay: 2 * 0.2 } }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.5 }}
+            className="flex justify-between w-full dark:bg-gray-900 bg-gray-50 p-5 rounded-lg"
+          >
             <div className=" flex flex-col gap-3">
               <p className="font-bold">
                 <span className="text-gray-400">#</span>
@@ -103,10 +121,12 @@ const InvoiceCard = ({ params }: {params:string}) => {
           </motion.section>
 
           <motion.section
-           initial={{ opacity: 0, scale: 1 }}
-           animate={{ opacity: 1, y: 0, transition: { delay: 3 * 0.2 } }}
-           exit={{ opacity: 0, y: 50 }}
-           transition={{ duration: 0.5 }} className="flex gap-28 bg-gray-50 p-5 rounded-lg dark:bg-gray-900 ">
+            initial={{ opacity: 0, scale: 1 }}
+            animate={{ opacity: 1, y: 0, transition: { delay: 3 * 0.2 } }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.5 }}
+            className="flex gap-28 bg-gray-50 p-5 rounded-lg dark:bg-gray-900 "
+          >
             <article className="flex flex-col gap-9">
               <div className="flex flex-col gap-3">
                 <p className="text-gray-400 text-sm">Invoice Date</p>
@@ -142,10 +162,12 @@ const InvoiceCard = ({ params }: {params:string}) => {
           </motion.section>
 
           <motion.section
-           initial={{ opacity: 0, scale: 1 }}
-           animate={{ opacity: 1, y: 0, transition: { delay: 4 * 0.2 } }}
-           exit={{ opacity: 0, y: 50 }}
-           transition={{ duration: 0.5 }} className="bg-gray-50 p-5 rounded-lg dark:bg-gray-900 ">
+            initial={{ opacity: 0, scale: 1 }}
+            animate={{ opacity: 1, y: 0, transition: { delay: 4 * 0.2 } }}
+            exit={{ opacity: 0, y: 50 }}
+            transition={{ duration: 0.5 }}
+            className="bg-gray-50 p-5 rounded-lg dark:bg-gray-900 "
+          >
             <Table>
               <TableHeader>
                 <TableRow>
