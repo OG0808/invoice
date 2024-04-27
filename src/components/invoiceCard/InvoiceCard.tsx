@@ -42,7 +42,7 @@ const InvoiceCard = ({ params }: { params: string }) => {
   const { clientName, createdAt, paymentDue, clientEmail, status } = filInv;
   const { clientAddress } = filInv;
   return (
-    <>
+    <section className="flex flex-col gap-10 h-screen overflow-auto pt-20">
       <Link href={"/invoices"}>
         <Button className="w-fit flex gap-3">
           <i className="bx bxs-left-arrow"></i> back
@@ -195,7 +195,7 @@ const InvoiceCard = ({ params }: { params: string }) => {
           </motion.section>
         </CardContent>
       </Card>
-    </>
+    </section>
   );
 };
 

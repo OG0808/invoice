@@ -33,6 +33,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import useStore from "@/store/useStore";
+import { ScrollShadow } from "@nextui-org/scroll-shadow";
 
 
 
@@ -94,10 +95,11 @@ const UpdateInvoice = () => {
         <DialogTrigger asChild>
           <Button>Edit Invoice</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[525px]">
+        <ScrollShadow size={100} className="h-[600px]">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className={`flex flex-col transition duration-700 justify-between  max-w-lg dark:bg-slate-900 rounded-r-xl  overflow-auto rounded-xl`}
+            className={`flex flex-col transition duration-700 justify-between  max-w-lg dark:bg-slate-900 rounded-r-xl  overflow-auto rounded-xl `}
           >
             <div className="flex flex-col gap-3 ">
               <span className="font-bold">Bill From</span>
@@ -352,12 +354,15 @@ const UpdateInvoice = () => {
             </div>
 
             <div className="flex justify-between mt-10">
+              <DialogTrigger asChild>
+            
               <Badge
                 className="cursor-pointer text-sm bg-[#f9fafe] text-[#7e88c3] font-bold "
-                onClick={setShow}
-              >
+               
+                >
                 Discard
               </Badge>
+                </DialogTrigger>
               <div className="flex gap-3">
                 <Button
                   className="font-bold"
@@ -383,6 +388,7 @@ const UpdateInvoice = () => {
           {/* <DialogFooter>
           <Button type="submit">Save changes</Button>
         </DialogFooter> */}
+        </ScrollShadow>
         </DialogContent>
       </Dialog>
     </>
